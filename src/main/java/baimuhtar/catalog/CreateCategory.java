@@ -9,9 +9,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.net.SecureCacheResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class CreateCategory {
     public static void main(String[] args) {
@@ -26,31 +24,35 @@ public class CreateCategory {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите название категории: ");
         String category_name = scanner.nextLine();
-        System.out.println("Введите название характеристики (через запятую): ");
-        String option_name = scanner.nextLine();
-
 
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
         EntityManager manager = factory.createEntityManager();
 
-
         try {
-            TypedQuery<Category> findCategoryIfExist = manager.createQuery("select c.name from Category c", Category.class);
+
+            TypedQuery<String> findCategoryIfExist = manager.createQuery("select c.name from Category c", String.class);
             manager.getTransaction().begin();
-            Category category = new Category();
-            List<Category> categoryList = findCategoryIfExist.getResultList();
+            List<String> categoryList = findCategoryIfExist.getResultList();
+            Set<String> categoryNameSet = new HashSet<>(categoryList);
 
-            for (int i = 0; i < categoryList.size(); i++) {
-                categoryList.add(category);
-               manager.persist(category);
-            }
-            String[] options = option_name.split(", ");
+            if (categoryNameSet.contains(category_name)) {
+                System.out.println("Такая категория уже существует");
+            } else {
+                Category category = new Category();
+                category.setName(category_name);
+                manager.persist(category);
 
-            for (int i = 0; i < options.length; i++) {
-                Option option = new Option();
-                option.setCategory(category);
-                option.setName(options[i]);
-                manager.persist(option);
+                System.out.println("Введите название характеристики (через запятую): ");
+                String option_name = scanner.nextLine();
+
+                String[] options = option_name.split(", ");
+
+                for (int i = 0; i < options.length; i++) {
+                    Option option = new Option();
+                    option.setCategory(category);
+                    option.setName(options[i]);
+                    manager.persist(option);
+                }
             }
 
             manager.getTransaction().commit();
@@ -61,4 +63,3 @@ public class CreateCategory {
         }
     }
 }
-
