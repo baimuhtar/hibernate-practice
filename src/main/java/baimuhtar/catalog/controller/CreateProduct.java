@@ -1,4 +1,4 @@
-package baimuhtar.catalog;
+package baimuhtar.catalog.controller;
 
 import baimuhtar.catalog.entity.Category;
 import baimuhtar.catalog.entity.Option;
