@@ -13,36 +13,46 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CreateProduct {
+
+    static EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
+    static EntityManager manager = factory.createEntityManager();
+
+    static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        createProduct();
-    }
-
-    public static void createProduct() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите id категории товара");
-        long category_id = Long.parseLong(scanner.nextLine());
-        System.out.println("Введите название товара");
-        String product_name = scanner.nextLine();
-        System.out.println("Введите цену на товар");
-        int product_price = scanner.nextInt();
-
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
-        EntityManager manager = factory.createEntityManager();
 
         try {
             manager.getTransaction().begin();
 
+            System.out.println("Введите id категории товара");
+            long category_id = Long.parseLong(scanner.nextLine());
+
+            System.out.println("Введите название товара");
+            String product_name = scanner.nextLine();
+
+            System.out.println("Введите цену на товар");
+            int product_price = scanner.nextInt();
+
             Category category = manager.find(Category.class, category_id);
 
+            List<Option> optionList = category.getOptions();
 
-            String [] products = product_name.split(", ");
+            Product product = new Product();
+            product.setCategory(category);
+            product.setName(product_name);
+            product.setPrice(product_price);
+            manager.persist(product);
 
-            for (int i = 0; i < products.length; i++) {
-                Product product = new Product();
-                product.setCategory(category);
-                product.setName(products[i]);
-                product.setPrice(product_price);
-                manager.persist(product);
+            for (Option option : optionList) {
+
+                System.out.printf("%s: ", option.getName());
+                String value_name = scanner.nextLine();
+
+                Value value = new Value();
+                value.setProduct(product);
+                value.setOption(option);
+                value.setValue(value_name);
+                manager.persist(value);
             }
 
             manager.getTransaction().commit();
@@ -50,6 +60,5 @@ public class CreateProduct {
             manager.getTransaction().rollback();
             e.printStackTrace();
         }
-
     }
 }

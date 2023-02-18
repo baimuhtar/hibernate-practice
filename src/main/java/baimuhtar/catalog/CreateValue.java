@@ -21,16 +21,18 @@ public class CreateValue {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
         EntityManager manager = factory.createEntityManager();
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите id товара: ");
-        Long product_id = Long.parseLong(scanner.nextLine());
-        System.out.println("Введите id характеристики товара: ");
-        Long option_id = Long.parseLong(scanner.nextLine());
-        System.out.println("Введите название значения: ");
-        String value = scanner.nextLine();
+
 
 
         try {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Введите id товара: ");
+            Long product_id = Long.parseLong(scanner.nextLine());
+            System.out.println("Введите id характеристики товара: ");
+            Long option_id = Long.parseLong(scanner.nextLine());
+            System.out.println("Введите название значения: ");
+            String value = scanner.nextLine();
+
             manager.getTransaction().begin();
 
             Product product = manager.find(Product.class, product_id);
