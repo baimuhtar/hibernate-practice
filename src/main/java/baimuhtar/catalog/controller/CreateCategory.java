@@ -2,6 +2,7 @@ package baimuhtar.catalog.controller;
 
 import baimuhtar.catalog.entity.Category;
 import baimuhtar.catalog.entity.Option;
+import lombok.extern.java.Log;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,10 +10,19 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 public class CreateCategory {
 
-    static EntityManagerFactory factory = Persistence.createEntityManagerFactory("main");
+    static EntityManagerFactory factory;
+    static {
+        LogManager logManager = LogManager.getLogManager();
+        Logger logger = logManager.getLogger("");
+        logger.setLevel(Level.OFF);
+        factory = Persistence.createEntityManagerFactory("main");
+    }
     static EntityManager manager = factory.createEntityManager();
 
     static final Scanner scanner = new Scanner(System.in);
