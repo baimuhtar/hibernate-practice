@@ -34,3 +34,13 @@ create table values (
     foreign key (option_id) references options (id),
     unique (product_id, option_id)
 );
+
+create table user (
+    id int8,
+    role varchar(25),
+    login varchar (25),
+    password varchar(50),
+    first_name varchar(50),
+    last_name varchar(50),
+    registration_date date
+);

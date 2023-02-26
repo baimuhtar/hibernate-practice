@@ -56,18 +56,18 @@ public class UpdateProduct {
                 query.setParameter(2, option);
 
                 List<Value> valueList = query.getResultList();
-               //  System.out.printf("%s [%s]: ", valueList.get(0).getOption(), option.getValues());
-                String value_name = scanner.nextLine();
-                valueList.get(0).setValue(value_name);
+
+                    System.out.printf("%s [%s]: ", option.getName(), valueList.get(0).getValue());
+                    String value_name = scanner.nextLine();
+                    valueList.get(0).setValue(value_name);
             }
+                manager.getTransaction().commit();
+            } catch(
+                    Exception e)
 
-        manager.getTransaction().commit();
-    } catch(
-    Exception e)
-
-    {
-        manager.getTransaction().rollback();
-        e.printStackTrace();
+            {
+                manager.getTransaction().rollback();
+                e.printStackTrace();
+            }
+        }
     }
-}
-}

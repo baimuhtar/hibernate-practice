@@ -30,7 +30,7 @@ public class Main {
         System.out.println(editing);
         System.out.println(deleting);
 
-        System.out.println("Выберите действие: ");
+        System.out.print("Выберите действие: ");
         Scanner scanner = new Scanner(System.in);
         int action = Integer.parseInt(scanner.nextLine());
 
